@@ -65,7 +65,7 @@ git log --pretty=oneline -$revs_number | awk '{print $1}' |
 while read rev; do
   git diff $rev |
 
-  grep -q "$1"
+  grep -q "$query"
   if [ $? -eq 0 ]
   then
     echo "  ${txtylw}commit $rev${txtrst}"
