@@ -6,7 +6,7 @@ Don't like grep? It's easy to change according to your needs.
 **If you ever:**
 
 * Wanted to see when a method was introduced.
-* Wanted to see if that meethod that apparently is no longer needed was
+* Wanted to see if that method that apparently is no longer needed was
   deleted by someone in the past.
 * Simply wanted a tool to grep in your git diffs..
 
