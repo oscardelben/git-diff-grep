@@ -5,8 +5,6 @@
 # Example: "git-diff-grep 10 login_required" will grep for
 # login_required in the last 10 commits diffs
 
-#!/bin/bash
-
 # Text color variables
 txtund=$(tput sgr 0 1)    # Underline
 txtbld=$(tput bold)       # Bold
