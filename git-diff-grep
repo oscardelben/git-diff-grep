@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# Usage: git-diff-grep <revs-number> <query>
+# Usage: git-diff-grep [OPTIONS] <query>
+# revs-number defaults to 5
 
-# Example: "git-diff-grep 10 login_required" will grep for
+# Example: "git-diff-grep -c 10 login_required" will grep for
 # login_required in the last 10 commits diffs
-
-#!/bin/bash
 
 # Text color variables
 txtund=$(tput sgr 0 1)    # Underline
@@ -24,11 +23,49 @@ function trim {
   echo $*
 }
 
-git log --pretty=oneline -$1 | awk '{print $1}' |
+# Set usage for error cases
+usage="Usage: git-diff-grep [OPTIONS] <query>
+  -c INTEGER    Set number of commits (default: 5)"
+
+# Set default value for last commits
+revs_number=5
+
+# Parse options
+while getopts ":c:" opt; do
+  case $opt in
+    c )
+      revs_number=$OPTARG
+
+      # Check if revs_number is a number
+      numeric=$(echo $revs_number | grep "[0-9]\+")
+      if [ ! $numeric ]; then
+        echo "$usage"
+        exit 1
+      else
+        shift 2
+      fi
+      ;;
+    \? )
+      echo "Invalid option -$OPTARG" >&2
+      echo "$usage"
+      exit 1
+      ;;
+  esac
+done
+
+# Query should be at position $1
+if [ $1 ]; then
+  query=$1
+else
+  echo "$usage"
+  exit 1
+fi
+
+git log --pretty=oneline -$revs_number | awk '{print $1}' |
 while read rev; do
   git diff $rev |
 
-  grep -q "$2"
+  grep -q "$query"
   if [ $? -eq 0 ]
   then
     echo "  ${txtylw}commit $rev${txtrst}"
@@ -36,7 +73,7 @@ while read rev; do
     git show -s --format="  Date: %cd" $rev
     git show -s --format="    %s" $rev
     echo
-    git_diff=$(git diff $rev | grep "$2")
+    git_diff=$(git diff $rev | grep "$query")
     echo "$git_diff" | while read line
     do
       add_remove=$(echo $line | grep '^[-+]')
