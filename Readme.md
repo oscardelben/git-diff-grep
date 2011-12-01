@@ -12,7 +12,7 @@ Don't like grep? It's easy to change according to your needs.
 
 This tool is for you.
 
-Example: `git-diff-grep 10 login_required` will grep for login_required in the last 10 commits diffs.
+Example: `git-diff-grep -c 10 login_required` will grep for login_required in the last 10 commits diffs.
 
 ### Installation
 
@@ -20,7 +20,8 @@ Put it somewhere in your path, and you're good to go.
 
 ### Usage
 
-`git-diff-grep <revs-number> <query>`
+`git-diff-grep [OPTIONS] <query>
+  -c INTEGER    Set number of commits (default: 5)`
 
 ### License
 
