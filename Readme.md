@@ -21,13 +21,11 @@ Put it somewhere in your path, and you're good to go.
 ### Usage
 
 `git-diff-grep [OPTIONS] <query>
-  -c INTEGER    Set number of commits (default: 100)`
+  -c INTEGER    Set number of commits`
 
 
 ### Todo
 
-- Search in all history by default (this is easy, just leave out the
-  revisions number)
 - Paginate output
 
 ### License

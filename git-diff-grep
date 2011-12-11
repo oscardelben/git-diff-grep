@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Usage: git-diff-grep [OPTIONS] <query>
-# revs-number defaults to 100
 
 # Example: "git-diff-grep -c 10 login_required" will grep for
 # login_required in the last 10 commits diffs
@@ -25,10 +24,7 @@ function trim {
 
 # Set usage for error cases
 usage="Usage: git-diff-grep [OPTIONS] <query>
-  -c INTEGER    Set number of commits (default: 100)"
-
-# Set default value for last commits
-revs_number=100
+  -c INTEGER    Set number of commits"
 
 # Parse options
 while getopts ":c:" opt; do
@@ -42,6 +38,7 @@ while getopts ":c:" opt; do
         echo "$usage"
         exit 1
       else
+        revs_number="-$revs_number"
         shift 2
       fi
       ;;
@@ -61,7 +58,7 @@ else
   exit 1
 fi
 
-git log --pretty=oneline -$revs_number | awk '{print $1}' |
+git log --pretty=oneline $revs_number | awk '{print $1}' |
 while read rev; do
   git diff $rev |
 
