@@ -23,9 +23,9 @@ Put it somewhere in your path, and you're good to go.
 
 ### Usage
 
-`git-diff-grep [OPTIONS] <query>
-  -c INTEGER    Set number of commits`
+`git-diff-grep [OPTIONS] <query>`
 
+Options: -c to specify the number of commits
 
 ### Todo
 
