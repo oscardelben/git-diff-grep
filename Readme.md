@@ -14,6 +14,9 @@ This tool is for you.
 
 Example: `git-diff-grep -c 10 login_required` will grep for login_required in the last 10 commits diffs.
 
+To paginate output, run: `git-diff-grep "query" | less -R`. the -R
+option will tell less to preserve colors.
+
 ### Installation
 
 Put it somewhere in your path, and you're good to go.
@@ -26,7 +29,7 @@ Put it somewhere in your path, and you're good to go.
 
 ### Todo
 
-- Paginate output
+- Paginate output automatically.
 
 ### License
 
