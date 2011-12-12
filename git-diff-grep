@@ -93,4 +93,3 @@ while read rev; do
 
 done
 
-| less -R
