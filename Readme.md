@@ -1,3 +1,9 @@
+# DEPRECATED
+
+git-diff-grep is now deprecated.
+
+Use `git log -S<query>` to search in the history for commits that changed <query>. Add an optional `-p` to see the diff as well.
+
 # git-diff-grep
 
 This tool will run grep in the last n commit diffs that you specify.
