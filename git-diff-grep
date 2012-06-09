@@ -61,7 +61,7 @@ function trim {
 }
 
 print_revisions() {
-    git log --pretty=oneline $revs_number | awk '{print $1}' 
+    git log --pretty=format:"%H" $revs_number
 }
 
 loop_through_revisions() {
