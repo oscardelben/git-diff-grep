@@ -91,5 +91,5 @@ while read rev; do
     echo
   fi
 
-done
+done | less -FXRS
 
