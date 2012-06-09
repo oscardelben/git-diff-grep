@@ -17,11 +17,6 @@ txtcyn=$(tput setaf 6)    # Cyan
 txtwht=$(tput setaf 7)    # White
 txtrst=$(tput sgr0)       # Text reset
 
-# Get rid of multiple whitespaces
-function trim {
-  echo $*
-}
-
 # Set usage for error cases
 usage="Usage: git-diff-grep [OPTIONS] <query>
   -c INTEGER    Set number of commits"
@@ -60,6 +55,11 @@ fi
 
 ####### THE ACTUAL PROGRAM
 
+# Get rid of multiple whitespaces
+function trim {
+  echo $*
+}
+
 print_revisions() {
     git log --pretty=oneline $revs_number | awk '{print $1}' 
 }
@@ -69,17 +69,19 @@ loop_through_revisions() {
       git diff $rev |
 
       grep -q "$query"
-      if [ $? -eq 0 ]
+      if [ $? -eq 0 ] # If a match was found
       then
         echo "  ${txtylw}commit $rev${txtrst}"
         git show -s --format="  Author: %cn <%cE>" $rev
         git show -s --format="  Date: %cd" $rev
         git show -s --format="    %s" $rev
         echo
+        # Print the diff for that commit, and grep for query
         git_diff=$(git diff $rev | grep "$query")
         echo "$git_diff" | while read line
         do
           add_remove=$(echo $line | grep '^[-+]')
+          # See if the line was a new or removed line
           if [ "$add_remove" ]; then
             add=$(echo $line | grep '^[-]')
             if [ "$add" ]; then
