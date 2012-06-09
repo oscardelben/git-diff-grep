@@ -58,38 +58,49 @@ else
   exit 1
 fi
 
-git log --pretty=oneline $revs_number | awk '{print $1}' |
-while read rev; do
-  git diff $rev |
+####### THE ACTUAL PROGRAM
 
-  grep -q "$query"
-  if [ $? -eq 0 ]
-  then
-    echo "  ${txtylw}commit $rev${txtrst}"
-    git show -s --format="  Author: %cn <%cE>" $rev
-    git show -s --format="  Date: %cd" $rev
-    git show -s --format="    %s" $rev
-    echo
-    git_diff=$(git diff $rev | grep "$query")
-    echo "$git_diff" | while read line
-    do
-      add_remove=$(echo $line | grep '^[-+]')
-      if [ "$add_remove" ]; then
-        add=$(echo $line | grep '^[-]')
-        if [ "$add" ]; then
-          color=$txtred
-        else
-          color=$txtgrn
-        fi
-      else
-        color=$txtrst
+print_revisions() {
+    git log --pretty=oneline $revs_number | awk '{print $1}' 
+}
+
+loop_through_revisions() {
+    while read rev; do
+      git diff $rev |
+
+      grep -q "$query"
+      if [ $? -eq 0 ]
+      then
+        echo "  ${txtylw}commit $rev${txtrst}"
+        git show -s --format="  Author: %cn <%cE>" $rev
+        git show -s --format="  Date: %cd" $rev
+        git show -s --format="    %s" $rev
+        echo
+        git_diff=$(git diff $rev | grep "$query")
+        echo "$git_diff" | while read line
+        do
+          add_remove=$(echo $line | grep '^[-+]')
+          if [ "$add_remove" ]; then
+            add=$(echo $line | grep '^[-]')
+            if [ "$add" ]; then
+              color=$txtred
+            else
+              color=$txtgrn
+            fi
+          else
+            color=$txtrst
+          fi
+
+          echo "    ${color}$(trim $line)${txtrst}"
+        done
+        echo
+        echo
       fi
+  done
+}
 
-      echo "    ${color}$(trim $line)${txtrst}"
-    done
-    echo
-    echo
-  fi
+main() {
+    print_revisions | loop_through_revisions | less -FXRS
+}
 
-done | less -FXRS
-
+main
